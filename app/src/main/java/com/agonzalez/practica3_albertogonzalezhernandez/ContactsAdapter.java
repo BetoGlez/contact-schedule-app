@@ -25,6 +25,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     }
 
     @Override
+    public void onInsertItem(ContactItem contactItem) {
+        contactsList.add(0, contactItem);
+        notifyItemInserted(0);
+    }
+
+    @Override
     public void onDeleteItem(int position) {
         contactsList.remove(position);
         notifyItemRemoved(position);

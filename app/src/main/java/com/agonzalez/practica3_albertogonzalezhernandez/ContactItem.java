@@ -1,6 +1,8 @@
 package com.agonzalez.practica3_albertogonzalezhernandez;
 
-public class ContactItem {
+import java.io.Serializable;
+
+public class ContactItem implements Serializable {
     private String name;
     private String phone;
     private int labelColor;

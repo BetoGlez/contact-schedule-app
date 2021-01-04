@@ -1,12 +1,23 @@
 <resources>
     <string name="app_name">Practica3_AlbertoGonzalezHernandez</string>
     <string name="contactNamePlaceholder">Name</string>
+    <string name="contactNameHint">Full Name</string>
     <string name="contactPhonePlaceholder">Phone</string>
+    <string name="contactMobileHint">Mobile Phone</string>
+    <string name="contactHomePhoneHint">Home Phone</string>
+    <string name="contactAddressHint">Address</string>
+    <string name="contactMailHint">Mail</string>
     <string name="contactFirstLetter">A</string>
     <string name="contactListMenuHeader">Select an action for the contact</string>
     <string name="deletedFeedback">has been deleted</string>
+    <string name="insertContactFeedback">has been added to your contacts</string>
     <string name="details">Details</string>
     <string name="delete">Delete</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="imgDesc">Image Description</string>
+    <string name="emptyFieldError">The field cannot be empty</string>
+    <string name="invalidMailError">Introduce a valid mail</string>
+    <string name="invalidPhoneError">Introduce a valid phone</string>
+    <string name="completeFields">Please complete all fields correctly to continue</string>
 </resources>

@@ -1,16 +1,23 @@
 package com.agonzalez.practica3_albertogonzalezhernandez;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -23,10 +30,22 @@ public class MainActivity extends AppCompatActivity {
     private ContactsAdapter contactsAdapter;
     private int contactPos = 0;
 
+    // Fab
+    private FloatingActionButton addContactFab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // FAB
+        addContactFab = findViewById(R.id.newContactFab);
+        addContactFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateContactDetail();
+            }
+        });
 
         loadContactsAdapter();
         setContactsAdapter();
@@ -85,11 +104,34 @@ public class MainActivity extends AppCompatActivity {
         contactsRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
     }
 
+    private void insertContactItem(ContactItem contact) {
+        String contactName = contact.getName();
+        contactsList.add(0, contact);
+        contactsAdapter.notifyItemInserted(0);
+        String insertContactFeedback = getResources().getString(R.string.insertContactFeedback);
+        Snackbar.make(contactsRecyclerView, contactName + " " + insertContactFeedback, Snackbar.LENGTH_LONG).show();
+
+    }
+
     private void deleteContactItem(int pos){
         String contactName = contactsList.get(pos).getName();
         contactsList.remove(pos);
         contactsAdapter.notifyItemRemoved(pos);
         String deleteFeedback = getResources().getString(R.string.deletedFeedback);
         Snackbar.make(contactsRecyclerView, contactName + " " + deleteFeedback, Snackbar.LENGTH_LONG).show();
+    }
+
+    // Page navigation
+    private void navigateContactDetail() {
+        Intent contactDetailIntent = new Intent(this, ContactDetailActivity.class);
+        startActivityForResult(contactDetailIntent, 200);
+    }
+
+    protected void onActivityResult(int code, int result, Intent data) {
+        super.onActivityResult(code, result, data);
+        if (code == 200 && result == RESULT_OK) {
+            ContactItem savedContact = (ContactItem) data.getSerializableExtra("CONTACT_DATA");
+            insertContactItem(savedContact);
+        }
     }
 }
