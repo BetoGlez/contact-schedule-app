@@ -37,6 +37,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     }
 
     @Override
+    public void onEditItem(int position, ContactItem editedItem) {
+        contactsList.set(position, editedItem);
+        notifyItemChanged(position, editedItem);
+    }
+
+    @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_contact, parent, false);
         ViewHolder vh = new ViewHolder(itemView);
@@ -76,7 +82,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
 
         public void bindData(final ContactItem contact) {
             nameTv.setText(contact.getName());
-            phoneTv.setText(contact.getPhone());
+            phoneTv.setText(contact.getMobilePhone());
             // Circle label color
             OvalShape ovalShape = new OvalShape();
             ShapeDrawable shapeDrawable = new ShapeDrawable(ovalShape);

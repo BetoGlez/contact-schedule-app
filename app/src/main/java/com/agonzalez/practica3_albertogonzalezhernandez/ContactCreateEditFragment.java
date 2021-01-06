@@ -3,6 +3,7 @@ package com.agonzalez.practica3_albertogonzalezhernandez;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,16 +18,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.UUID;
 
 public class ContactCreateEditFragment extends Fragment {
 
     Context context;
     Activity activity;
-    Button cancelContactBtn, saveContactBtn;
+    Button cancelContactBtn, saveContactBtn, mobileCallBtn, homeCallBtn;
     TextInputLayout contactNameField, contactMobileField, contactHomePhoneField, contactAddressField, contactMailField;
+    LinearLayout callPhoneButtons;
+
+    private ContactItem editableContactInfo;
 
     public ContactCreateEditFragment() { }
 
@@ -47,13 +55,32 @@ public class ContactCreateEditFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contact_create_edit, container, false);
-
         context = requireContext();
         activity = requireActivity();
 
         initListenersAndWatchers(view);
 
+        editableContactInfo = getContactInfoData();
+        if (!editableContactInfo.getName().trim().isEmpty()) {
+            System.out.println("Edition mode for contact: " + editableContactInfo.getName());
+            setContactData(editableContactInfo);
+            mobileCallBtn.setText(getResources().getString(R.string.callMobile) + " \n" + editableContactInfo.getMobilePhone());
+            homeCallBtn.setText(getResources().getString(R.string.callHomePhone) + " \n" + editableContactInfo.getHomePhone());
+        } else {
+            System.out.println("Creation contact mode");
+            ((ViewGroup) callPhoneButtons.getParent()).removeView(callPhoneButtons);
+        }
+
         return view;
+    }
+
+    private ContactItem getContactInfoData() {
+        ContactItem contactInfo = new ContactItem("", "", "", "", "", "", -1);
+        Intent i = activity.getIntent();
+        if(i.getSerializableExtra("CONTACT_INFO_DATA") != null) {
+            contactInfo = (ContactItem) i.getSerializableExtra("CONTACT_INFO_DATA");
+        }
+        return contactInfo;
     }
 
     private void initListenersAndWatchers(View view) {
@@ -65,6 +92,10 @@ public class ContactCreateEditFragment extends Fragment {
 
         cancelContactBtn = view.findViewById(R.id.cancelContactBtn);
         saveContactBtn = view.findViewById(R.id.saveContactBtn);
+
+        mobileCallBtn = view.findViewById(R.id.callMobileBtn);
+        homeCallBtn = view.findViewById(R.id.callHomePhoneBtn);
+        callPhoneButtons = view.findViewById(R.id.phoneCallButtons);
 
         contactNameField.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
@@ -159,6 +190,26 @@ public class ContactCreateEditFragment extends Fragment {
                 clickSaveBtn();
             }
         });
+
+        mobileCallBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String contactMobilePhone = editableContactInfo.getMobilePhone();
+                if (!contactMobilePhone.trim().isEmpty()) {
+                    startPhoneCall(contactMobilePhone);
+                }
+            }
+        });
+
+        homeCallBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String contactHomePhone = editableContactInfo.getHomePhone();
+                if (!contactHomePhone.trim().isEmpty()) {
+                    startPhoneCall(contactHomePhone);
+                }
+            }
+        });
     }
 
     private void clickCancelBtn() {
@@ -168,9 +219,9 @@ public class ContactCreateEditFragment extends Fragment {
 
     private void clickSaveBtn() {
         ContactItem savedContact = composeContact();
-        if (!savedContact.getName().trim().isEmpty()) {
+        if (!savedContact.getId().trim().isEmpty()) {
             Intent i = new Intent();
-            i.putExtra("CONTACT_DATA", savedContact);
+            i.putExtra("CONTACT_SAVE_DATA", savedContact);
             activity.setResult(Activity.RESULT_OK, i);
             activity.finish();
         } else {
@@ -216,7 +267,7 @@ public class ContactCreateEditFragment extends Fragment {
     }
 
     private ContactItem composeContact() {
-        ContactItem contactToSave = new ContactItem("", "", -1);
+        ContactItem contactToSave = new ContactItem("", "", "", "", "", "",  -1);
         String contactName = contactNameField.getEditText().getText().toString().trim();
         String contactAddress = contactAddressField.getEditText().getText().toString().trim();
         String contactMobile = contactMobileField.getEditText().getText().toString().trim();
@@ -227,10 +278,27 @@ public class ContactCreateEditFragment extends Fragment {
             boolean isErrorInForm = !TextUtils.isEmpty(contactNameField.getError()) || !TextUtils.isEmpty(contactAddressField.getError()) || !TextUtils.isEmpty(contactMobileField.getError()) ||
                 !TextUtils.isEmpty(contactHomePhoneField.getError()) || !TextUtils.isEmpty(contactMailField.getError());
             if (!isErrorInForm) {
-                int contactColor = (int) ((Math.random() * (6 - 1)) + 1);
-                contactToSave = new ContactItem(contactName, contactMobile, contactColor);
+                int contactColor = editableContactInfo.getId().trim().isEmpty() ? (int) ((Math.random() * (6 - 1)) + 1): editableContactInfo.getLabelColor();
+                String contactId = editableContactInfo.getId().trim().isEmpty() ? UUID.randomUUID().toString() : editableContactInfo.getId();
+                contactToSave = new ContactItem(contactId, contactName, contactAddress, contactMobile, contactHomePhone, contactMail, contactColor);
             }
         }
         return contactToSave;
+    }
+
+    private void setContactData(ContactItem contactData) {
+        contactNameField.getEditText().setText(contactData.getName());
+        contactAddressField.getEditText().setText(contactData.getAddress());
+        contactMobileField.getEditText().setText(contactData.getMobilePhone());
+        contactHomePhoneField.getEditText().setText(contactData.getHomePhone());
+        contactMailField.getEditText().setText(contactData.getMail());
+    }
+
+    private void startPhoneCall(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel: " + phoneNumber));
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 }

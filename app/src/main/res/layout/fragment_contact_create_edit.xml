@@ -28,8 +28,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -37,9 +37,9 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="14dp"
                     android:alpha="0.5"
+                    android:contentDescription="@string/imgDesc"
                     android:src="@drawable/ic_person_black_24dp"
-                    app:tint="@color/colorWhite"
-                    android:contentDescription="@string/imgDesc" />
+                    app:tint="@color/colorWhite" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/contactNameField"
@@ -57,8 +57,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -66,9 +66,9 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="14dp"
                     android:alpha="0.5"
+                    android:contentDescription="@string/imgDesc"
                     android:src="@drawable/ic_home_black_24dp"
-                    app:tint="@color/colorWhite"
-                    android:contentDescription="@string/imgDesc" />
+                    app:tint="@color/colorWhite" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/contactAddressField"
@@ -86,8 +86,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -95,9 +95,9 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="14dp"
                     android:alpha="0.5"
+                    android:contentDescription="@string/imgDesc"
                     android:src="@drawable/ic_smartphone_black_24dp"
-                    app:tint="@color/colorWhite"
-                    android:contentDescription="@string/imgDesc" />
+                    app:tint="@color/colorWhite" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/contactMobileField"
@@ -115,8 +115,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -124,9 +124,9 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="14dp"
                     android:alpha="0.5"
+                    android:contentDescription="@string/imgDesc"
                     android:src="@drawable/ic_phone_black_24dp"
-                    app:tint="@color/colorWhite"
-                    android:contentDescription="@string/imgDesc" />
+                    app:tint="@color/colorWhite" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/contactHomePhoneField"
@@ -144,8 +144,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -153,9 +153,9 @@
                     android:layout_gravity="center"
                     android:layout_marginEnd="14dp"
                     android:alpha="0.5"
+                    android:contentDescription="@string/imgDesc"
                     android:src="@drawable/ic_email_black_24dp"
-                    app:tint="@color/colorWhite"
-                    android:contentDescription="@string/imgDesc" />
+                    app:tint="@color/colorWhite" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/contactMailField"
@@ -170,6 +170,34 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/phoneCallButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/callMobileBtn"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/callMobile" />
+
+            <Button
+                android:id="@+id/callHomePhoneBtn"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/callHomePhone" />
         </LinearLayout>
 
         <LinearLayout
@@ -194,7 +222,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/save" />
+
         </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

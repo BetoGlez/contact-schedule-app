@@ -11,6 +11,7 @@
     <string name="contactListMenuHeader">Select an action for the contact</string>
     <string name="deletedFeedback">has been deleted</string>
     <string name="insertContactFeedback">has been added to your contacts</string>
+    <string name="editContactFeedback">"The contact has been edited"</string>
     <string name="details">Details</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
@@ -20,4 +21,6 @@
     <string name="invalidMailError">Introduce a valid mail</string>
     <string name="invalidPhoneError">Introduce a valid phone</string>
     <string name="completeFields">Please complete all fields correctly to continue</string>
+    <string name="callMobile">Call mobile</string>
+    <string name="callHomePhone">Call house</string>
 </resources>
