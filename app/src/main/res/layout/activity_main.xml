@@ -34,11 +34,11 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
         android:clickable="true"
-        app:srcCompat="@drawable/ic_person_add_black_24dp"
-        app:backgroundTint="@color/colorPrimary"
+        android:focusable="true"
         android:tint="#FFFFFF"
-        tools:ignore="VectorDrawableCompat"
-        android:focusable="true" />
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@drawable/ic_person_add_black_24dp"
+        tools:ignore="VectorDrawableCompat" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

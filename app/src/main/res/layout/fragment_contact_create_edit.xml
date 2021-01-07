@@ -182,6 +182,7 @@
             <Button
                 android:id="@+id/callMobileBtn"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:textColor="@color/colorAccent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -192,6 +193,7 @@
             <Button
                 android:id="@+id/callHomePhoneBtn"
                 style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:textColor="@color/colorAccent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -209,17 +211,19 @@
 
             <Button
                 android:id="@+id/cancelContactBtn"
-                style="@style/Widget.AppCompat.Button"
+                android:layout_margin="5dp"
+                android:background="@color/darkColorHl"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:text="@string/cancel" />
 
             <Button
                 android:id="@+id/saveContactBtn"
-                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_margin="5dp"
+                android:background="@color/colorAccent"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
                 android:text="@string/save" />
 

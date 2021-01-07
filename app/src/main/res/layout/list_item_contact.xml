@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="4dp"
-    card_view:cardUseCompatPadding="true">
+    card_view:cardUseCompatPadding="true"
+    style="@style/CustomCardView">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +25,7 @@
                 android:layout_margin="6dp"
                 android:gravity="center"
                 android:text="@string/contactFirstLetter"
-                android:textColor="#000000"
+                android:textColor="@color/colorWhite"
                 android:textSize="24sp" />
         </LinearLayout>
 
