@@ -2,13 +2,17 @@ package com.agonzalez.practica3_albertogonzalezhernandez;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -34,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView contactsRecyclerView;
     private ContactsAdapter contactsAdapter;
     private int contactPos = 0;
+    private int MY_PERMISSIONS_REQUEST_ACCESS_WRITE_EXTERNAL_STORAGE;
+    private int MY_PERMISSIONS_REQUEST_ACCESS_CALL_PHONE;
 
     // Fab
     private FloatingActionButton addContactFab;
@@ -42,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Permissions
+        requestPermissions();
 
         // FAB
         addContactFab = findViewById(R.id.newContactFab);
@@ -52,9 +61,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Recycler View
         loadContactsAdapter();
         setContactsAdapter();
         registerForContextMenu(contactsRecyclerView);
+    }
+
+    private void requestPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_PERMISSIONS_REQUEST_ACCESS_WRITE_EXTERNAL_STORAGE);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, MY_PERMISSIONS_REQUEST_ACCESS_CALL_PHONE);
+        }
     }
 
     @Override
