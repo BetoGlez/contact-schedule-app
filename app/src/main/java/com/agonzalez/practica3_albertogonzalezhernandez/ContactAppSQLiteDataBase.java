@@ -14,8 +14,11 @@ public class ContactAppSQLiteDataBase extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "ContactsApp.db";
     private static final String CONTACTS_TABLE_NAME = "contacts";
+    private static final String SCHEDULE_TABLE_NAME = "schedule";
 
-    private static final String CREATE_DATABASE = "CREATE TABLE " + CONTACTS_TABLE_NAME +
+    private static final String CREATE__SCHEDULE_TABLE = "CREATE TABLE " + SCHEDULE_TABLE_NAME +
+            " (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," + " title VARCHAR(1000) , date VARCHAR(1000))";
+    private static final String CREATE_CONTACTS_TABLE = "CREATE TABLE " + CONTACTS_TABLE_NAME +
             " (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," + " name VARCHAR(1000) , address VARCHAR(1000), mobilePhone VARCHAR(1000), homePhone VARCHAR(1000), mail VARCHAR(1000), labelColor INTEGER)";
 
     public ContactAppSQLiteDataBase(Context context) {
@@ -24,13 +27,16 @@ public class ContactAppSQLiteDataBase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_DATABASE);
+        db.execSQL(CREATE__SCHEDULE_TABLE);
+        db.execSQL(CREATE_CONTACTS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + SCHEDULE_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + CONTACTS_TABLE_NAME);
-        db.execSQL(CREATE_DATABASE);
+        db.execSQL(CREATE__SCHEDULE_TABLE);
+        db.execSQL(CREATE_CONTACTS_TABLE);
         onCreate(db);
     }
 
@@ -93,5 +99,55 @@ public class ContactAppSQLiteDataBase extends SQLiteOpenHelper {
         c.close();
         db.close();
         return contactsList;
+    }
+
+    public int insertAppointment(AppointmentItem appointment) {
+        SQLiteDatabase db = getWritableDatabase();
+        int appointmentId = -1;
+        if (db != null) {
+            ContentValues appointmentValues = new ContentValues();
+            appointmentValues.put("title", appointment.getTitle());
+            appointmentValues.put("date", appointment.getDate());
+
+            appointmentId = (int) db.insert(SCHEDULE_TABLE_NAME, null, appointmentValues);
+        }
+        db.close();
+        return appointmentId;
+    }
+
+    public boolean deleteAppointment(String appointmentId)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        boolean result = db.delete(SCHEDULE_TABLE_NAME,  "id=" + appointmentId, null) > 0;
+        db.close();
+        return result;
+    }
+
+    public void editAppointment(AppointmentItem appointment) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues appointmentValues = new ContentValues();
+        appointmentValues.put("title", appointment.getTitle());
+        appointmentValues.put("date", appointment.getDate());
+        db.update(SCHEDULE_TABLE_NAME, appointmentValues, "id=" + appointment.getId(), null);
+        db.close();
+    }
+
+    public List<AppointmentItem> getSchedule() {
+        List<AppointmentItem> scheduleList  = new ArrayList<>();
+        SQLiteDatabase db = getWritableDatabase();
+        String[] appointmentValuesToGet = {"id", "title", "date"};
+        Cursor c = db.query(SCHEDULE_TABLE_NAME, appointmentValuesToGet, null, null, null, null, null, null);
+        if (c.moveToFirst()){
+            do{
+                String id = String.valueOf(c.getInt(c.getColumnIndex("id")));
+                String title = c.getString(c.getColumnIndex("title"));
+                String date = c.getString(c.getColumnIndex("date"));
+
+                scheduleList.add(new AppointmentItem(id, title, date));
+            }while(c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return scheduleList;
     }
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
@@ -19,6 +20,10 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class AppointmentCreateEditFragment extends Fragment {
 
     Context context;
@@ -26,6 +31,8 @@ public class AppointmentCreateEditFragment extends Fragment {
     CalendarView appointmentCalendarView;
     TextInputLayout appointmentTitleField;
     Button saveAppointmentBtn, cancelAppointmentBtn;
+
+    private String appointmentDate = "";
 
     private AppointmentItem editableAppointmentInfo;
 
@@ -99,6 +106,15 @@ public class AppointmentCreateEditFragment extends Fragment {
             }
         });
 
+        appointmentCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                String formattedDay = String.valueOf(dayOfMonth).length() < 2 ? "0" + dayOfMonth : String.valueOf(dayOfMonth);
+                String formattedMonth = String.valueOf(month).length() < 2 ? "0" + (month + 1) : String.valueOf(month + 1);
+                appointmentDate = formattedDay + "/" + formattedMonth + "/" + year;
+            }
+        });
+
         saveAppointmentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,7 +163,8 @@ public class AppointmentCreateEditFragment extends Fragment {
     private AppointmentItem composeAppointment() {
         AppointmentItem appointmentToSave = new AppointmentItem("", "", "");
         String appointmentTitle = appointmentTitleField.getEditText().getText().toString().trim();
-        String appointmentDate = "18/02/2021";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        appointmentDate = appointmentDate.trim().isEmpty() ? dateFormat.format(new Date()) : appointmentDate;
         boolean areFieldsComplete = !appointmentTitle.isEmpty() && !appointmentDate.isEmpty();
         if (areFieldsComplete) {
             boolean isErrorInForm = !TextUtils.isEmpty(appointmentTitleField.getError());
@@ -161,6 +178,15 @@ public class AppointmentCreateEditFragment extends Fragment {
 
     private void setAppointmentData(AppointmentItem appointmentData) {
         appointmentTitleField.getEditText().setText(appointmentData.getTitle());
-        // TODO: Set date
+        long dateMilliseconds = 0;
+        String appointmentDateString = appointmentData.getDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date appointmentDate = dateFormat.parse(appointmentDateString);
+            dateMilliseconds = appointmentDate.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        appointmentCalendarView.setDate(dateMilliseconds);
     }
 }

@@ -32,4 +32,5 @@
     <string name="appointmentDate">01/01/2021</string>
     <string name="appointmentTitleHint">Appointment title</string>
     <string name="insertAppointmentFeedback">has been added to your schedule</string>
+    <string name="editAppointmentFeedback">"The appointment has been edited"</string>
 </resources>
