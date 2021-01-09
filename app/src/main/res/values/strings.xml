@@ -33,4 +33,5 @@
     <string name="appointmentTitleHint">Appointment title</string>
     <string name="insertAppointmentFeedback">has been added to your schedule</string>
     <string name="editAppointmentFeedback">"The appointment has been edited"</string>
+    <string name="infoMessage">"Select an option to export contacts, add a contact or manage your schedule"</string>
 </resources>
