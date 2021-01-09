@@ -8,23 +8,18 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Patterns;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.UUID;
 
 public class ContactCreateEditFragment extends Fragment {
 
@@ -279,7 +274,7 @@ public class ContactCreateEditFragment extends Fragment {
                 !TextUtils.isEmpty(contactHomePhoneField.getError()) || !TextUtils.isEmpty(contactMailField.getError());
             if (!isErrorInForm) {
                 int contactColor = editableContactInfo.getId().trim().isEmpty() ? (int) ((Math.random() * (6 - 1)) + 1): editableContactInfo.getLabelColor();
-                String contactId = editableContactInfo.getId().trim().isEmpty() ? UUID.randomUUID().toString() : editableContactInfo.getId();
+                String contactId = editableContactInfo.getId().trim().isEmpty() ? "-1" : editableContactInfo.getId();
                 contactToSave = new ContactItem(contactId, contactName, contactAddress, contactMobile, contactHomePhone, contactMail, contactColor);
             }
         }

@@ -1,6 +1,9 @@
 package com.agonzalez.practica3_albertogonzalezhernandez;
 
+import android.content.Context;
 import android.os.Environment;
+import android.view.View;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,9 +16,11 @@ public class ExternalStorageSD {
     public ExternalStorageSD() {
     }
 
-    public void writeDataOnExternalStorage(List<ContactItem> contactList) {
+    public void writeDataOnExternalStorage(List<ContactItem> contactList, Context context, View view) {
         if (isExternalStorageReady()) {
             createFile(contactList);
+            Toast toast = Toast.makeText(context, view.getResources().getText(R.string.exportContactsFeedback), Toast.LENGTH_LONG);
+            toast.show();
         }
     }
 

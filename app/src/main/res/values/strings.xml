@@ -12,6 +12,7 @@
     <string name="deletedFeedback">has been deleted</string>
     <string name="insertContactFeedback">has been added to your contacts</string>
     <string name="editContactFeedback">"The contact has been edited"</string>
+    <string name="exportContactsFeedback">"The contacts have been exported to external SD"</string>
     <string name="details">Details</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
@@ -24,6 +25,4 @@
     <string name="callMobile">Call mobile</string>
     <string name="callHomePhone">Call house</string>
     <string name="searchPlaceholder">Search a contact</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

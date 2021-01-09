@@ -1,39 +1,31 @@
 package com.agonzalez.practica3_albertogonzalezhernandez;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.ContextMenu;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ContactAppSQLiteDataBase contactsAppDb;
     private List<ContactItem> contactsList = new ArrayList<>();
     private RecyclerView contactsRecyclerView;
     private ContactsAdapter contactsAdapter;
@@ -48,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //DB
+        contactsAppDb = new ContactAppSQLiteDataBase(getApplicationContext());
+        contactsList = contactsAppDb.getContacts();
 
         //Permissions
         requestPermissions();
@@ -122,17 +118,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadContactsAdapter() {
-        contactsList.add(new ContactItem(getUniqueId(), "Alberto González Hernández", "Calle Obertura 1, 5A. Madrid, Spain 28011", "634270451", "934563284", "betoglez.1902@gmail.com", 1));
-        contactsList.add(new ContactItem(getUniqueId(), "Rafael Nadal", "Pascual Yunquera 82. Almuñécar, Granada 18690", "633524395", "987453211", "rnadal@gmail.com", 2));
-        contactsList.add(new ContactItem(getUniqueId(), "Lionel Messi", "Cartagena 71. Abanilla, Murcia 30640", "9336482643", "933847321", "lmessi@icloud.com", 3));
-        contactsList.add(new ContactItem(getUniqueId(), "Cristiano Ronaldo", "21 Main Street, Egginton 28013", "634527595", "933273842", "cr7@outlook.com", 4));
-        contactsList.add(new ContactItem(getUniqueId(), "Jordi Alba", "3 The Ellers, 40 Leeds And Bradford Road, Leeds 28011", "933465721", "988736421", "jalba@gmail.com", 5));
-        contactsList.add(new ContactItem(getUniqueId(), "Antoine Griezman", "Flat 1, Shearwater House, 79 Millward Drive, Bletchley 62564", "634526399", "933478900", "agriezman9@hotmail.com", 1));
-        contactsList.add(new ContactItem(getUniqueId(), "Novak Djockovic", "Kingscote, Staples Barn Lane, Henfield 29876", "634521211", "748562453", "noledjocko@yahoo.com", 2));
-        contactsList.add(new ContactItem(getUniqueId(), "Andres Iniesta", "Hill House, Great Whittington 23412", "635221381", "75634123", "ainiesta@gmail.com", 3));
-        contactsList.add(new ContactItem(getUniqueId(), "Javier Hernández", "36 Grampian Way, Eastham 92564", "7772202085", "7772202085", "jhernandez14@yahoo.com.mx", 4));
-        contactsList.add(new ContactItem(getUniqueId(), "Rafael Márquez", "39 Warren Close, Hay On Wye 27016", "7771104110", "7772560692", "rmarquez4@gmail.com", 5));
-
         contactsRecyclerView = findViewById(R.id.contactsRecycler);
         contactsAdapter = new ContactsAdapter(contactsList, this);
     }
@@ -152,14 +137,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void insertContactItem(ContactItem contact) {
         String contactName = contact.getName();
-        contactsList.add(0, contact);
-        contactsAdapter.notifyItemInserted(0);
-        String insertContactFeedback = getResources().getString(R.string.insertContactFeedback);
-        Snackbar.make(contactsRecyclerView, contactName + " " + insertContactFeedback, Snackbar.LENGTH_LONG).show();
+        int newContactId = contactsAppDb.insertContact(contact);
+        if (newContactId > -1) {
+            contact.setId(String.valueOf(newContactId));
+            contactsList.add(contact);
+            contactsAdapter.notifyItemInserted(contactsList.size() - 1);
+            String insertContactFeedback = getResources().getString(R.string.insertContactFeedback);
+            Snackbar.make(contactsRecyclerView, contactName + " " + insertContactFeedback, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     private void deleteContactItem(int pos){
         String contactName = contactsList.get(pos).getName();
+        contactsAppDb.deleteContact(contactsList.get(pos).getId());
         contactsList.remove(pos);
         contactsAdapter.notifyItemRemoved(pos);
         String deleteFeedback = getResources().getString(R.string.deletedFeedback);
@@ -177,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         if (!editedContact.getId().trim().isEmpty()) {
             pos = contactsList.indexOf(editedContact);
             if (pos > -1) {
+                contactsAppDb.editContact(contactItem);
                 contactsList.set(pos, contactItem);
                 contactsAdapter.notifyItemChanged(pos, contactItem);
                 String editContactFeedback = getResources().getString(R.string.editContactFeedback);
@@ -189,10 +180,6 @@ public class MainActivity extends AppCompatActivity {
     private void navigateContactDetail() {
         Intent contactDetailIntent = new Intent(this, ContactDetailActivity.class);
         startActivityForResult(contactDetailIntent, 201);
-    }
-
-    private String getUniqueId() {
-        return UUID.randomUUID().toString();
     }
 
     protected void onActivityResult(int code, int result, Intent data) {
