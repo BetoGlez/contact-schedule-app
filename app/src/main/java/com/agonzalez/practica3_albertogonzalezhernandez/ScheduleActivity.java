@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
@@ -15,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class ScheduleActivity extends AppCompatActivity {
 
@@ -37,6 +39,12 @@ public class ScheduleActivity extends AppCompatActivity {
 
         // FAB
         newAppointmentFab = findViewById(R.id.newAppointmentFab);
+        newAppointmentFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateAppointmentDetail();
+            }
+        });
 
         // Recycler View
         loadScheduleAdapter();
@@ -87,6 +95,18 @@ public class ScheduleActivity extends AppCompatActivity {
         scheduleRecyclerView.setLayoutManager(new GridLayoutManager(this, 1));
     }
 
+    private void insertScheduleItem(AppointmentItem appointment) {
+        String appointmentTitle = appointment.getTitle();
+        //int newContactId = contactsAppDb.insertContact(contact);
+        //if (newContactId > -1) {
+        appointment.setId(String.valueOf(UUID.randomUUID()));
+        appointmentsList.add(appointment);
+        scheduleAdapter.notifyItemInserted(appointmentsList.size() - 1);
+        String insertAppointmentFeedback = getResources().getString(R.string.insertAppointmentFeedback);
+        Snackbar.make(scheduleRecyclerView, appointmentTitle + " " + insertAppointmentFeedback, Snackbar.LENGTH_LONG).show();
+        //}
+    }
+
     private void deleteScheduleItem(int pos){
         String appointmentTitle = appointmentsList.get(pos).getTitle();
         // contactsAppDb.deleteContact(contactsList.get(pos).getId());
@@ -94,5 +114,25 @@ public class ScheduleActivity extends AppCompatActivity {
         scheduleAdapter.notifyItemRemoved(pos);
         String deleteFeedback = getResources().getString(R.string.deletedFeedback);
         Snackbar.make(scheduleRecyclerView, appointmentTitle + " " + deleteFeedback, Snackbar.LENGTH_LONG).show();
+    }
+
+    // Page navigation
+    private void navigateAppointmentDetail() {
+        Intent appointmentDetailIntent = new Intent(this, AppointmentDetailActivity.class);
+        startActivityForResult(appointmentDetailIntent, 301);
+    }
+
+    protected void onActivityResult(int code, int result, Intent data) {
+        super.onActivityResult(code, result, data);
+        System.out.println("Intent response code: " + code);
+        if (result == RESULT_OK) {
+            AppointmentItem savedAppointment = (AppointmentItem) data.getSerializableExtra("APPOINTMENT_SAVE_DATA");
+            if (code == 301) {
+                insertScheduleItem(savedAppointment);
+            } else if (code == 200) {
+                System.out.println("Edited data: " + savedAppointment.getId());
+                //editContactItem(savedContact);
+            }
+        }
     }
 }

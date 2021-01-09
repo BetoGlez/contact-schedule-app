@@ -1,6 +1,8 @@
 package com.agonzalez.practica3_albertogonzalezhernandez;
 
-public class AppointmentItem {
+import java.io.Serializable;
+
+public class AppointmentItem implements Serializable {
     private String id;
     private String title;
     private String date;

@@ -37,7 +37,7 @@
         android:focusable="true"
         android:tint="#FFFFFF"
         app:backgroundTint="@color/colorAccent"
-        app:srcCompat="@drawable/ic_person_add_black_24dp"
+        app:srcCompat="@drawable/ic_event_black_24dp"
         tools:ignore="VectorDrawableCompat" />
 
 

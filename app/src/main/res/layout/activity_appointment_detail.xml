@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ContactDetailActivity">
+    tools:context=".AppointmentDetailActivity">
 
     <fragment
-        android:id="@+id/contactDetailFragment"
-        android:name="com.agonzalez.practica3_albertogonzalezhernandez.ContactCreateEditFragment"
+        android:id="@+id/appointmentDetailFragment"
+        android:name="com.agonzalez.practica3_albertogonzalezhernandez.AppointmentCreateEditFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="5dp"
