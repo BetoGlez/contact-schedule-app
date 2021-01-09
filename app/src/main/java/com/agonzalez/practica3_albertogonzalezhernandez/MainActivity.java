@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         requestPermissions();
 
         // FAB
-        addContactFab = findViewById(R.id.newContactFab);
+        addContactFab = findViewById(R.id.newAppointmentFab);
         addContactFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
         menu.setHeaderTitle(R.string.contactListMenuHeader);
-        inflater.inflate(R.menu.menu_contact_recview, menu);
+        inflater.inflate(R.menu.menu_list_actions_recview, menu);
     }
 
     @Override

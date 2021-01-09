@@ -9,6 +9,7 @@
     <string name="contactMailHint">Mail</string>
     <string name="contactFirstLetter">A</string>
     <string name="contactListMenuHeader">Select an action for the contact</string>
+    <string name="scheduleListMenuHeader">Select an action for the appointment</string>
     <string name="deletedFeedback">has been deleted</string>
     <string name="insertContactFeedback">has been added to your contacts</string>
     <string name="editContactFeedback">"The contact has been edited"</string>
@@ -25,4 +26,10 @@
     <string name="callMobile">Call mobile</string>
     <string name="callHomePhone">Call house</string>
     <string name="searchPlaceholder">Search a contact</string>
+    <string name="openSchedule">Open schedule</string>
+    <string name="exportToFile">Export to file</string>
+    <string name="appointmentTitle">Appointment title here</string>
+    <string name="appointmentDate">01/01/2021</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

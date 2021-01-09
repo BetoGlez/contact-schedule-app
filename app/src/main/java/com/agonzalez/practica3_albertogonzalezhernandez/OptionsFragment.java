@@ -2,6 +2,7 @@ package com.agonzalez.practica3_albertogonzalezhernandez;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,9 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class OptionsFragment extends Fragment {
 
@@ -65,6 +64,12 @@ public class OptionsFragment extends Fragment {
                 exportContacts(view);
             }
         });
+        openScheduleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToScheduleActivity();
+            }
+        });
     }
 
     private void exportContacts(View view) {
@@ -74,7 +79,8 @@ public class OptionsFragment extends Fragment {
         externalStorageSD.writeDataOnExternalStorage(contactsList, context, view);
     }
 
-    private String getUniqueId() {
-        return UUID.randomUUID().toString();
+    private void navigateToScheduleActivity() {
+        Intent scheduleIntent = new Intent(context, ScheduleActivity.class);
+        startActivity(scheduleIntent);
     }
 }

@@ -23,19 +23,19 @@
         <Button
             android:id="@+id/openScheduleBtn"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:textColor="@color/colorAccent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Open schedule" />
+            android:text="@string/openSchedule"
+            android:textColor="@color/colorAccent" />
 
         <Button
             android:id="@+id/exportToFileBtn"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:textColor="@color/colorAccent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Export to file" />
+            android:text="@string/exportToFile"
+            android:textColor="@color/colorAccent" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

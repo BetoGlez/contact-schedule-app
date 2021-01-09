@@ -62,8 +62,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         holder.bindData(item);
     }
 
-    // public void setItems(List<ContactItem> items) { contactsList = items; }
-
     @Override
     public int getItemCount() {
         return contactsList.size();
